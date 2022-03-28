@@ -1,1 +1,434 @@
-Hello world
+<!--
+  Copyright 2018 The Distill Template Authors
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<!doctype html>
+<meta charset=utf-8>
+<title>MaskGIT: Masked Generative Image Transformer</title>
+<style>
+body {
+  margin: 0 auto;
+  padding: 30px 20px 50px;
+  font-family: sans-serif;
+  background: #f4f4f4;
+  color: #222;
+  max-width: 820px;
+}
+p {
+  line-height: 150%;
+  margin: auto;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+h1, h2 {
+  font-weight: 150;
+}
+h2 {
+  font-size: 18px;
+}
+h2 a {
+  color: #000;
+}
+
+h3 {
+  margin-top: 40px;
+}
+a {
+  text-decoration: none;
+  color: #22b;
+}
+a:hover {
+  text-decoration: underline;
+  color: #22b;
+}
+a:hover img {
+  opacity: .5;
+}
+.paper img { background: #888; }
+.video img {
+  border-radius: 6px;
+  background: #000;
+}
+h1 span {
+  font-size: 90%;
+  line-height: 1.5em;
+}
+h1 span::before { content: "("; }
+h1 span::after { content: ")"; }
+h1 span::before, h1 span::after {
+  vertical-align: .06em;
+}
+h2 span {
+  line-height: 2em;
+}
+em {
+  color: #333;
+  font-weight: bold;
+  font-style: normal;
+}
+.teaser {
+  max-width: 90%;
+  margin:0 auto;
+  margin-top: 20px;
+  white-space: nowrap;
+  position: relative;
+}
+.teaser .imgs .full {
+  width: 100%;
+}
+.twocolumns {
+	height: 300px;
+}
+.twocolumns-first {
+	position: absolute;
+  	width: 50%;
+}
+.twocolumns-second {
+	position: absolute;
+  	width: 50%;
+	left: 50%;
+}
+.teaser .labels{
+  display: inline-block;
+  margin: 0 auto;
+  text-align: center;
+  padding-top: 10px;
+  font-size: 16px;
+}
+.bibtex {
+  white-space: pre;
+  font-family: monospace;
+  line-height: 150%;
+  background: #fff;
+  padding: 10px;
+  display: inline-block;
+  border-radius: 4px;
+}
+.crow > * {
+  vertical-align: middle;
+  margin-right: 20px;
+}
+a.img {
+  display: inline-block;
+}
+.links {
+  display: inline-block;
+  line-height: 150%;
+  padding: 8px 0;
+}
+.links a {
+  padding: 0 3px;
+}
+.examples {
+  padding: 10px 0;
+  max-width: 50em;
+}
+.examples img {
+  display: inline-block;
+  width: 192px;
+  height: 108px;
+}
+/* Slideshow container */
+.panorama-slideshow {
+  position: relative;
+}
+
+/* Hide the images by default */
+.panorama-slide {
+  display: none;
+}
+/* Next & previous buttons */
+.prev, .next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  margin-top: -22px;
+  padding: 16px;
+  color: white;
+  font-weight: bold;
+  font-size: 25px;
+  transition: 0.1s ease;
+  border-radius: 0 2px 2px 0;
+  user-select: none;
+}
+
+/* Position the "next button" to the right */
+.next {
+  right: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+.prev:hover, .next:hover {
+  background-color: rgba(0,0,0,0.8);
+}
+
+/* Hide the images by default */
+div[class^='image-gallery-slide-'] {
+  display: none;
+}
+/* Next & previous buttons */
+.prev-image, .next-image {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  margin-top: -22px;
+  margin-left: -50px;
+  margin-right: -30px;
+  padding: 16px;
+  color: black;
+  font-weight: bold;
+  font-size: 40px;
+  transition: 0.6s ease;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+}
+
+/* Position the "next button" to the right */
+.next-image {
+  right: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+
+.prev-image:hover, .next-image:hover {
+  background-color: rgba(0,0,0,0.8);
+  color: white;
+}
+
+
+/* Fading animation */
+.fade {
+  -webkit-animation-name: fade;
+  -webkit-animation-duration: 1.5s;
+  animation-name: fade;
+  animation-duration: 1.5s;
+}
+
+
+@-webkit-keyframes fade {
+  from {opacity: .4}
+  to {opacity: 1}
+}
+
+@keyframes fade {
+  from {opacity: .4}
+  to {opacity: 1}
+}
+/* Style tab links */
+.tablink {
+  background-color: #fff;
+  color: black;
+  float: left;
+  outline: none;
+  cursor: pointer;
+  padding: 8px 5px;
+  font-size: 17px;
+  font-weight: bold;
+  border: none;
+
+}
+
+.tablink:hover {
+  background-color: #36373A;
+  color: white;
+}
+
+/* Style the tab content (and add height:100% for full page content) */
+.tabcontent {
+  color: white;
+  display: none;
+  padding: 100px 20px;
+  height: 100%;
+}
+
+@media screen and (min-width: 601px) {
+  .tablink {
+    font-size: 17px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .tablink {
+    font-size: 12px;
+  }
+}
+
+</style>
+<h1>
+MaskGIT:&nbsp;Masked Generative Image Transformer<br>
+<span>CVPR 2022</span></h1>
+<h2>
+  <a href="https://research.google/people/107664/">Huiwen Chang</a>, Han Zhang, Lu Jiang, Ce Liu, <a href="https://research.google/people/WilliamTFreeman/">Bill Freeman </a> <br>
+  <span>Google Research</span>
+</h2>
+<hr>
+
+<div class=teaser>
+<div class=imgs><img class=full src="imgs/thumbnail.png"></div>
+<div width=800px align="center" style="margin-top:10px">Class-conditional Image Editing by MaskGIT</div>
+</div>
+
+<h3>Abstract</h3>
+<p> Image generative transformers typically treat an image as a sequence of tokens, and decode an image sequentially following the raster scan ordering (i.e. line-by-line).</p>
+<p> This paper proposes a novel image synthesis paradigm using a bidirectional transformer decoder, which we term MaskGIT. During training, MaskGIT learns to predict randomly masked tokens by attending to tokens in all directions. At inference time, the model begins with generating all tokens of an image simultaneously, and then refines the image iteratively conditioned on the previous generation. 
+</p>
+<p> Our experiments demonstrate that MaskGIT significantly outperforms the state-of-the-art transformer model on the ImageNet dataset, and accelerates autoregressive decoding by up to 64x. Besides, MaskGIT can be easily extended to various image editing tasks, such as inpainting, extrapolation, and image manipulation.
+</p>
+<br>
+<div width=800 align="center" style="margin:0 auto;">
+<img src="imgs/sampling.gif" width=450 style="border: 1px solid transparent">
+<div align="center" style="width:450px; margin-top:10px"> <span>
+Autoregressive decoding vs MaskGIT's parallel decoding visualized at the same playback speed (0.1s per step).</span> </div>
+</div>
+<h3>Paper</h3>
+<div class=crow>
+<a class=img href="https://arxiv.org/pdf/2202.04200.pdf"><img src="imgs/paper.png" width=200 style="border: 1px solid transparent"></a>
+<div class=links>
+MaskGIT: Masked Generative Image Transformer<br>
+Huiwen Chang, Han Zhang, Lu Jiang, Ce Liu, and Bill Freeman<br>
+<em>CVPR 2022</em><br>
+[<a href="https://arxiv.org/abs/2202.04200">arXiv</a>] [<a href="https://github.com/google-research/tree/master/maskgit">GitHub</a>] [Demo Colab]
+</div>
+</div>
+
+<h3>Applications</h3>
+
+Horizontal image extrapolation given the middle 512x256 images:
+<figure style="grid-column: page;"> 
+<div class="panorama-slideshow">
+  <div class="panorama-slide fade">
+	  <img src="imgs/panorama_0.png" width=100% style="display:block; border: 1px solid transparent"/>
+  </div>
+  <div class="panorama-slide fade">
+	  <img src="imgs/panorama_1.png" width=100% style="display:block; border: 1px solid transparent"/>
+  </div>
+  <div class="panorama-slide fade">
+	  <img src="imgs/panorama_2.png" width=100% style="display:block; border: 1px solid transparent"/>
+  </div>
+  <div class="panorama-slide fade">
+	  <img src="imgs/panorama_3.png" width=100% style="display:block; border: 1px solid transparent"/>
+  </div>
+  <div class="panorama-slide fade">
+	  <img src="imgs/panorama_4.png" width=100% style="display:block; border: 1px solid transparent"/>
+  </div>
+  <div class="panorama-slide fade">
+	  <img src="imgs/panorama_5.png" width=100% style="display:block; border: 1px solid transparent"/>
+  </div>
+  <div class="panorama-slide fade">
+	  <img src="imgs/panorama_6.png" width=100% style="display:block; border: 1px solid transparent"/>
+  </div>
+  <div class="panorama-slide fade">
+	  <img src="imgs/panorama_7.png" width=100% style="display:block; border: 1px solid transparent"/>
+  </div>
+  <div class="panorama-slide fade">
+	  <img src="imgs/panorama_8.png" width=100% style="display:block; border: 1px solid transparent"/>
+  </div>
+  <a class="prev" onclick="plusPanoramaSlides(-1)">&#10094;</a>
+  <a class="next" onclick="plusPanoramaSlides(1)">&#10095;</a>
+</div>
+</figure>
+
+<!-- Inpainting results on 512x512 Places2 images: -->
+
+
+<br>
+Class-conditional image editing results:
+
+<img src="imgs/class-conditional_image_editing.gif" width=750 style="display:block; border: 25px solid transparent"/>
+
+
+
+<h3>BibTeX</h3>
+<div class=bibtex>@InProceedings{chang2022maskgit,
+  title = {MaskGIT: Masked Generative Image Transformer},
+  author={Huiwen Chang and Han Zhang and Lu Jiang and Ce Liu and William T. Freeman},
+  booktitle = {The IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
+  month = {June},
+  year = {2022}
+}
+</div>
+
+
+<script>
+
+var panoramaSlideIndex = 1;
+const imageSlideIndex = [1, 1, 1, 1];
+
+// Show first page for panorama slide.
+showPanoramaSlides(panoramaSlideIndex);
+
+// Show first page for all image gallery slides.
+for (let i = 0; i < imageSlideIndex.length; i++) {
+  showImageSlides(imageSlideIndex[i], i)
+  }
+
+// Functions for controlling arrows for Panorama slides.
+function plusPanoramaSlides(n) {
+  showPanoramaSlides(panoramaSlideIndex += n);
+}
+
+function showPanoramaSlides(n) {
+  var i;
+  var slides = document.getElementsByClassName("panorama-slide");
+  if (n > slides.length) {panoramaSlideIndex = 1}    
+  if (n < 1) {panoramaSlideIndex = slides.length}
+  for (i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";  
+  }
+  slides[panoramaSlideIndex-1].style.display = "block";  
+}
+
+
+// Functions for controlling arrows for Image gallery slides.
+function plusImageSlides(n, m) {
+  showImageSlides(imageSlideIndex[m] += n, m);
+}
+
+function showImageSlides(n, m) {
+  var i;
+  var slides = document.getElementsByClassName("image-gallery-slide-".concat(m.toString()));
+  if (n > slides.length) {imageSlideIndex[m] = 1}    
+  if (n < 1) {imageSlideIndex[m] = slides.length}
+  for (i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";  
+  }
+  slides[imageSlideIndex[m]-1].style.display = "block";
+}
+
+// Function to control the Tab.
+function openTask(taskName, elmnt) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablink");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].style.color = "";
+    tablinks[i].style.backgroundColor = "";
+  }
+  document.getElementById(taskName).style.display = "block";
+  elmnt.style.color = "white";
+  elmnt.style.backgroundColor = "#36373A";
+}
+
+// Get the element with id="defaultOpen" and click on it
+document.getElementById("defaultOpen").click();
+
+  </script>
+
+

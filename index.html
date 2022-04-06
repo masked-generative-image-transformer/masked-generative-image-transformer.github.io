@@ -148,6 +148,16 @@ a.img {
 .panorama-slide {
   display: none;
 }
+/* Slideshow container */
+.image-slideshow {
+  position: relative;
+}
+
+/* Hide the images by default */
+.image-slide {
+  display: none;
+}
+
 /* Next & previous buttons */
 .prev, .next {
   cursor: pointer;
@@ -301,13 +311,13 @@ Autoregressive decoding vs MaskGIT's parallel decoding visualized at the same pl
 MaskGIT: Masked Generative Image Transformer<br>
 Huiwen Chang, Han Zhang, Lu Jiang, Ce Liu, and Bill Freeman<br>
 <em>CVPR 2022</em><br>
-[<a href="https://arxiv.org/abs/2202.04200">arXiv</a>] [<a href="https://github.com/google-research/tree/master/maskgit">GitHub</a>] [Demo Colab]
+[<a href="https://arxiv.org/abs/2202.04200">arXiv</a>] [<a href="https://github.com/google-research/maskgit">GitHub</a>] [<a href="https://colab.research.google.com/github/google-research/maskgit/blob/main/MaskGIT_demo.ipynb">Demo Colab</a>]
 </div>
 </div>
 
 <h3>Applications</h3>
 
-Horizontal image extrapolation given the middle 512x256 images:
+Horizontal image extrapolation:
 <figure style="grid-column: page;"> 
 <div class="panorama-slideshow">
   <div class="panorama-slide fade">
@@ -342,14 +352,43 @@ Horizontal image extrapolation given the middle 512x256 images:
 </div>
 </figure>
 
-<!-- Inpainting results on 512x512 Places2 images: -->
+Inpainting results on 512x512 Places2 images:
+<figure style="grid-column: page;"> 
+<div class="image-slideshow">
+  <div class="image-slide fade">
+	  <img src="imgs/inpaint_0.png" width=100% style="display:block; border: 1px solid transparent"/>
+  </div>
+  <div class="image-slide fade">
+	  <img src="imgs/inpaint_1.png" width=100% style="display:block; border: 1px solid transparent"/>
+  </div>
+  <div class="image-slide fade">
+	  <img src="imgs/inpaint_2.png" width=100% style="display:block; border: 1px solid transparent"/>
+  </div>
+  <div class="image-slide fade">
+	  <img src="imgs/inpaint_3.png" width=100% style="display:block; border: 1px solid transparent"/>
+  </div>
+  <div class="image-slide fade">
+	  <img src="imgs/inpaint_4.png" width=100% style="display:block; border: 1px solid transparent"/>
+  </div>
+  <div class="image-slide fade">
+	  <img src="imgs/inpaint_5.png" width=100% style="display:block; border: 1px solid transparent"/>
+  </div>
+  <div class="image-slide fade">
+	  <img src="imgs/inpaint_6.png" width=100% style="display:block; border: 1px solid transparent"/>
+  </div>
+  <div class="image-slide fade">
+	  <img src="imgs/inpaint_7.png" width=100% style="display:block; border: 1px solid transparent"/>
+  </div>
+  <a class="prev" onclick="plusImageSlides(-1)">&#10094;</a>
+  <a class="next" onclick="plusImageSlides(1)">&#10095;</a>
+</div>
+</figure>
 
 
 <br>
 Class-conditional image editing results:
 
 <img src="imgs/class-conditional_image_editing.gif" width=750 style="display:block; border: 25px solid transparent"/>
-
 
 
 <h3>BibTeX</h3>
@@ -362,19 +401,18 @@ Class-conditional image editing results:
 }
 </div>
 
+<h3>Acknowledgement</h3>
+Webpage template from Richard Tucker.
 
 <script>
 
 var panoramaSlideIndex = 1;
-const imageSlideIndex = [1, 1, 1, 1];
+var imageSlideIndex = 1;
 
 // Show first page for panorama slide.
 showPanoramaSlides(panoramaSlideIndex);
-
-// Show first page for all image gallery slides.
-for (let i = 0; i < imageSlideIndex.length; i++) {
-  showImageSlides(imageSlideIndex[i], i)
-  }
+// Show first page for image slide.
+showImageSlides(imageSlideIndex);
 
 // Functions for controlling arrows for Panorama slides.
 function plusPanoramaSlides(n) {
@@ -393,21 +431,21 @@ function showPanoramaSlides(n) {
 }
 
 
-// Functions for controlling arrows for Image gallery slides.
-function plusImageSlides(n, m) {
-  showImageSlides(imageSlideIndex[m] += n, m);
+function plusImageSlides(n) {
+  showImageSlides(imageSlideIndex += n);
 }
 
-function showImageSlides(n, m) {
+function showImageSlides(n) {
   var i;
-  var slides = document.getElementsByClassName("image-gallery-slide-".concat(m.toString()));
-  if (n > slides.length) {imageSlideIndex[m] = 1}    
-  if (n < 1) {imageSlideIndex[m] = slides.length}
+  var slides = document.getElementsByClassName("image-slide");
+  if (n > slides.length) {imageSlideIndex = 1}    
+  if (n < 1) {imageSlideIndex = slides.length}
   for (i = 0; i < slides.length; i++) {
       slides[i].style.display = "none";  
   }
-  slides[imageSlideIndex[m]-1].style.display = "block";
+  slides[imageSlideIndex-1].style.display = "block";  
 }
+
 
 // Function to control the Tab.
 function openTask(taskName, elmnt) {
